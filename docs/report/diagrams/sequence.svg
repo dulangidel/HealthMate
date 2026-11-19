@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" font-family="Helvetica, Arial, sans-serif" font-size="12">
+  <defs>
+    <marker id="s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#334155"/>
+    </marker>
+  </defs>
+  <rect width="800" height="400" fill="#ffffff"/>
+  <g font-weight="bold" text-anchor="middle" font-size="12">
+    <rect x="20" y="15" width="110" height="34" rx="5" fill="#EEF2FF" stroke="#4F46E5"/><text x="75" y="36">RecordForm (View)</text>
+    <rect x="170" y="15" width="130" height="34" rx="5" fill="#F0FDF4" stroke="#16A34A"/><text x="235" y="36">useRecordFormVM</text>
+    <rect x="335" y="15" width="100" height="34" rx="5" fill="#FDF4FF" stroke="#A21CAF"/><text x="385" y="36">validation</text>
+    <rect x="470" y="15" width="110" height="34" rx="5" fill="#FFF7ED" stroke="#EA580C"/><text x="525" y="36">healthStore</text>
+    <rect x="615" y="15" width="80" height="34" rx="5" fill="#F1F5F9" stroke="#475569"/><text x="655" y="36">Repository</text>
+    <rect x="720" y="15" width="65" height="34" rx="5" fill="#EFF6FF" stroke="#2563EB"/><text x="752" y="36">SQLite</text>
+  </g>
+  <g stroke="#CBD5E1" stroke-dasharray="4 4">
+    <line x1="75" y1="49" x2="75" y2="390"/><line x1="235" y1="49" x2="235" y2="390"/>
+    <line x1="385" y1="49" x2="385" y2="390"/><line x1="525" y1="49" x2="525" y2="390"/>
+    <line x1="655" y1="49" x2="655" y2="390"/><line x1="752" y1="49" x2="752" y2="390"/>
+  </g>
+  <g stroke="#334155" stroke-width="1.2" marker-end="url(#s)" fill="none">
+    <line x1="75" y1="80" x2="233" y2="80"/>
+    <line x1="235" y1="110" x2="383" y2="110"/>
+    <line x1="385" y1="135" x2="237" y2="135" stroke-dasharray="4 3"/>
+    <line x1="235" y1="165" x2="523" y2="165"/>
+    <line x1="525" y1="190" x2="653" y2="190"/>
+    <line x1="655" y1="215" x2="750" y2="215"/>
+    <line x1="752" y1="240" x2="657" y2="240" stroke-dasharray="4 3"/>
+    <line x1="525" y1="270" x2="653" y2="270"/>
+    <line x1="655" y1="290" x2="750" y2="290"/>
+    <line x1="752" y1="310" x2="527" y2="310" stroke-dasharray="4 3"/>
+    <line x1="525" y1="340" x2="237" y2="340" stroke-dasharray="4 3"/>
+    <line x1="235" y1="370" x2="77" y2="370" stroke-dasharray="4 3"/>
+  </g>
+  <g fill="#0f172a" font-size="11">
+    <text x="85" y="74">submit()</text>
+    <text x="245" y="104">validateRecordForm(values)</text>
+    <text x="245" y="129">{ valid, data }</text>
+    <text x="245" y="159">addRecord(data)</text>
+    <text x="535" y="184">create(input)</text>
+    <text x="660" y="209">INSERT …</text>
+    <text x="660" y="234">lastInsertRowId</text>
+    <text x="535" y="264">findAll()</text>
+    <text x="660" y="284">SELECT …</text>
+    <text x="535" y="304">rows → set({ records, revision+1 })</text>
+    <text x="245" y="334">resolved</text>
+    <text x="85" y="364">true → router.back()</text>
+  </g>
+  <text x="20" y="395" font-size="10.5" fill="#64748b">If validation fails, the ViewModel stops after step 2 and the View shows the field errors.</text>
+</svg>

@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>HealthMate – Technical Report</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 18mm 20mm 18mm;
+    @bottom-center { content: "Page " counter(page); font-family: Helvetica, Arial, sans-serif; font-size: 9pt; color: #6b7280; }
+    @top-right { content: "HealthMate – Technical Report"; font-family: Helvetica, Arial, sans-serif; font-size: 8.5pt; color: #9ca3af; }
+  }
+  @page :first { @bottom-center { content: none; } @top-right { content: none; } }
+  * { box-sizing: border-box; }
+  body { font-family: Helvetica, Arial, sans-serif; font-size: 10.5pt; line-height: 1.5; color: #1f2937; margin: 0; }
+  h1 { font-size: 18pt; color: #1e1b4b; border-bottom: 2px solid #4F46E5; padding-bottom: 4px; margin: 0 0 12px; break-after: avoid; }
+  h2 { font-size: 13pt; color: #312e81; margin: 18px 0 6px; break-after: avoid; }
+  h3 { font-size: 11pt; color: #374151; margin: 12px 0 4px; break-after: avoid; }
+  p { margin: 0 0 8px; text-align: justify; }
+  ul, ol { margin: 0 0 8px 0; padding-left: 20px; }
+  li { margin-bottom: 2px; }
+  .section { break-before: page; }
+  table { width: 100%; border-collapse: collapse; margin: 6px 0 12px; font-size: 9.2pt; break-inside: auto; }
+  th, td { border: 1px solid #d1d5db; padding: 4px 6px; text-align: left; vertical-align: top; }
+  th { background: #EEF2FF; color: #1e1b4b; }
+  tr { break-inside: avoid; }
+  code { font-family: Menlo, Consolas, monospace; font-size: 8.8pt; background: #f3f4f6; padding: 0 3px; border-radius: 3px; }
+  pre { font-family: Menlo, Consolas, monospace; font-size: 8.3pt; line-height: 1.4; background: #f8fafc; border: 1px solid #e2e8f0; border-left: 3px solid #4F46E5; padding: 8px 10px; margin: 6px 0 4px; white-space: pre; overflow: hidden; break-inside: avoid; }
+  pre.tree { font-size: 7.4pt; }
+  .caption { font-size: 8.8pt; color: #6b7280; text-align: center; margin: 2px 0 12px; font-style: italic; }
+  .code-caption { font-size: 8.8pt; color: #6b7280; margin: 0 0 10px; }
+  figure { margin: 8px 0; break-inside: avoid; text-align: center; }
+  figure img.diagram { width: 100%; border: 1px solid #e5e7eb; }
+  .shots { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; break-inside: avoid; margin: 6px 0; }
+  .shots figure { margin: 0; width: 30%; }
+  .shots.four figure { width: 23%; }
+  .shots img { width: 100%; border: 1px solid #d1d5db; border-radius: 6px; }
+  .shots figcaption { font-size: 8.5pt; color: #4b5563; margin-top: 3px; }
+  .note { background: #FFFBEB; border: 1px solid #FCD34D; border-left: 4px solid #F59E0B; padding: 8px 10px; font-size: 9.5pt; margin: 8px 0; break-inside: avoid; }
+  .pass { color: #15803d; font-weight: bold; }
+  .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -1px; margin-right: 4px; border: 1px solid #00000020; }
+  /* Cover */
+  .cover { height: 255mm; display: flex; flex-direction: column; justify-content: space-between; }
+  .cover .band { background: #4F46E5; color: #fff; padding: 28px 30px; border-radius: 10px; margin-top: 30mm; }
+  .cover .band .module { font-size: 11pt; opacity: .85; letter-spacing: .5px; text-transform: uppercase; }
+  .cover .band h1 { color: #fff; border: 0; font-size: 34pt; margin: 8px 0 4px; padding: 0; }
+  .cover .band .sub { font-size: 14pt; }
+  .cover table { font-size: 11pt; width: 75%; margin: 0 auto; }
+  .cover td { border: 0; border-bottom: 1px solid #e5e7eb; padding: 7px 4px; }
+  .cover td:first-child { color: #6b7280; width: 38%; }
+  .placeholder { color: #b45309; }
+  /* TOC */
+  .toc { font-size: 10.5pt; }
+  .toc a { color: inherit; text-decoration: none; }
+  .toc .row { display: flex; align-items: baseline; margin: 3px 0; }
+  .toc .row .t { white-space: nowrap; }
+  .toc .row .dots { flex: 1; border-bottom: 1px dotted #9ca3af; margin: 0 6px; transform: translateY(-3px); }
+  .toc .row.l1 { font-weight: bold; margin-top: 8px; }
+  .toc .row.l2 { padding-left: 18px; }
+  .two-col { display: flex; gap: 16px; }
+  .two-col > div { flex: 1; }
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<div class="cover">
+  <div class="band">
+    <div class="module">Mobile Application Development – Coursework 1</div>
+    <h1>HealthMate</h1>
+    <div class="sub">Personal Health &amp; Wellness Tracker<br>Technical Report</div>
+  </div>
+  <table>
+    <tr><td>Student name</td><td class="placeholder">[Student Name]</td></tr>
+    <tr><td>Student ID</td><td class="placeholder">[Student ID]</td></tr>
+    <tr><td>Module</td><td class="placeholder">[Module code] – Mobile Application Development</td></tr>
+    <tr><td>Lecturer</td><td class="placeholder">[Lecturer Name]</td></tr>
+    <tr><td>Institution</td><td class="placeholder">[Institution]</td></tr>
+    <tr><td>Platform</td><td>React Native 0.88 · Expo SDK 58 · TypeScript · SQLite</td></tr>
+    <tr><td>Submission date</td><td>19 November 2026</td></tr>
+  </table>
+  <div></div>
+</div>
+
+<!-- ============ TOC ============ -->
+<div class="section toc">
+  <h1>Table of Contents</h1>
+  <!--TOC-->
+</div>
+
+<!-- ============ 1 OVERVIEW ============ -->
+<div class="section">
+<h1 id="s1">1. Project Overview</h1>
+<p><b>HealthMate</b> is a cross-platform mobile application for iOS and Android that helps a health-conscious user record and review three daily activities: <b>steps walked</b>, <b>calories burned</b> and <b>water intake</b>. When the user opens the app they immediately see a summary of the current day (for example <i>Today – 19 November 2026: 7,850 steps, 420 kcal, 2,000 ml</i>) and can look back at previous days, search by date and manage their records.</p>
+<p>The application was developed with <b>React Native</b> using the <b>Expo</b> framework and <b>TypeScript</b>. All data is stored locally on the device in an embedded <b>SQLite</b> database through the <code>expo-sqlite</code> module, which is the React Native equivalent of Flutter’s <code>sqflite</code> package named in the brief. No internet connection or remote server is needed, so the app works offline and the user’s health data never leaves the device.</p>
+
+<h2>1.1 Aims and objectives</h2>
+<ul>
+  <li>Provide fast entry of daily health data through a validated form.</li>
+  <li>Persist records in a local SQLite table (<code>health_records</code>) with full Create, Read, Update and Delete (CRUD) support.</li>
+  <li>Show a clear dashboard of today’s totals and progress towards daily goals.</li>
+  <li>Let the user browse past records and search/filter them by date.</li>
+  <li>Apply a clean, layered architecture (MVVM, feature-based folders) with a dedicated state-management library (Zustand).</li>
+  <li>Verify the behaviour with automated unit/integration tests and documented manual test cases.</li>
+</ul>
+
+<h2>1.2 Scope and target users</h2>
+<p>The target user is an individual who wants a simple, private log of their activity rather than a complex fitness platform. The app therefore focuses on quick data entry, readable summaries and reliable storage. Integration with wearable sensors or cloud sync is outside the scope of this coursework, but the repository-based design (Section 3) allows such features to be added later without changing the screens.</p>
+
+<h2>1.3 Development environment</h2>
+<table>
+  <tr><th>Item</th><th>Details</th></tr>
+  <tr><td>Language</td><td>TypeScript 6.0 (strict mode)</td></tr>
+  <tr><td>Framework</td><td>React Native 0.88.1 with Expo SDK 58, React 19.3</td></tr>
+  <tr><td>Database</td><td>SQLite via expo-sqlite 58.0.18</td></tr>
+  <tr><td>Tools</td><td>Node.js 26, npm 11, Visual Studio Code, Xcode iOS Simulator (iPhone 17 Pro / Pro Max), Expo Go, Git</td></tr>
+  <tr><td>Quality</td><td>Jest 30 + React Native Testing Library, ESLint 9 (eslint-config-expo), <code>tsc --noEmit</code>, expo-doctor</td></tr>
+</table>
+</div>
+
+<!-- ============ 2 FEATURES ============ -->
+<div class="section">
+<h1 id="s2">2. Application Features</h1>
+<h2>2.1 Core features (coursework requirements)</h2>
+<table>
+  <tr><th style="width:24%">Requirement</th><th>Implementation</th><th style="width:18%">Screen</th></tr>
+  <tr><td>Add daily health entries</td><td>Form with a native date picker and numeric fields for steps, calories (kcal) and water (ml), plus an optional note. All input is validated before saving.</td><td>Add Record</td></tr>
+  <tr><td>View past records with dates</td><td>Records are grouped by day (“Today”, “Yesterday”, “Tue, 17 Nov 2026”), each group showing the daily totals and individual entries.</td><td>History</td></tr>
+  <tr><td>Update / delete records</td><td>Tapping an entry opens it in the Edit screen. Records can be deleted from the list (trash icon) or from the Edit screen; deletion always asks for confirmation.</td><td>History, Today, Edit</td></tr>
+  <tr><td>Search / filter by date</td><td>Free-text date search (<code>2026-11-15</code>, <code>15/11</code>, <code>Nov</code>, <code>Nov 2026</code>), quick filters (All, Today, Last 7 days, This month), a specific-date picker and newest/oldest sorting. Filtering is performed in SQL.</td><td>History</td></tr>
+  <tr><td>Summary dashboard</td><td>Today’s total steps, calories and water, each with a progress bar towards the daily goal, plus the list of today’s entries.</td><td>Today</td></tr>
+  <tr><td>Dummy data for testing</td><td>21 days of deterministic sample records are inserted on first launch; they can be restored at any time from Settings.</td><td>—</td></tr>
+</table>
+
+<h2>2.2 Additional features</h2>
+<ul>
+  <li><b>Daily goals</b> – the user can set goals for each metric in Settings. Goals are stored in SQLite and drive the dashboard progress bars.</li>
+  <li><b>Insights</b> – for the last 7 or 30 days the app shows the daily average, total, best day and the number of days each goal was reached.</li>
+  <li><b>Multiple entries per day</b> – e.g. a morning walk and an evening run; totals are aggregated automatically.</li>
+  <li><b>Data management</b> – “Reset to sample data” and “Delete all records” (both with confirmation).</li>
+  <li><b>Robustness</b> – loading, empty and error states on every screen, pull-to-refresh on the dashboard, a retry option if the database fails to open, and automatic date roll-over after midnight.</li>
+  <li><b>Accessibility</b> – screen-reader labels on icons, progress bars and list items; large touch targets.</li>
+</ul>
+</div>
+
+<!-- ============ 3 ARCHITECTURE ============ -->
+<div class="section">
+<h1 id="s3">3. Application Architecture</h1>
+<h2 id="s3-1">3.1 Explanation of the project architecture</h2>
+<p>HealthMate follows the <b>Model–View–ViewModel (MVVM)</b> pattern combined with a <b>feature-based folder structure</b>. MVVM was chosen because it separates what the user sees (View) from the screen logic (ViewModel) and the data/business rules (Model) (Gossman, 2005). In React, a ViewModel is naturally expressed as a <i>custom hook</i>: it holds the screen’s state, derives values and exposes actions, while the screen component only renders and forwards events. This keeps components small and makes the logic testable without rendering any UI.</p>
+<p>Data access is isolated behind the <b>Repository pattern</b> (Fowler, 2002). Every SQL statement lives in a repository; no screen, hook or store writes SQL directly. The repository is defined as a TypeScript interface, so the global store can be tested with an in-memory fake and a remote API could replace SQLite in the future without changing any screen.</p>
+<p>Code is organised <b>by feature</b> (<code>health-records</code>, <code>goals</code>, <code>insights</code>) rather than by file type, so everything related to one feature – model, data, state, view models and views – sits together. Shared, feature-independent code (database connection, theme, reusable components, utilities) lives in <code>core</code>. Routing is handled by Expo Router in <code>src/app</code>; route files are deliberately thin and only render a feature screen.</p>
+
+<h2 id="s3-2">3.2 Architecture diagram</h2>
+<figure><img class="diagram" src="diagrams/architecture.svg" alt="Architecture diagram"></figure>
+<div class="caption">Figure 1 – Layered MVVM architecture of HealthMate. Dependencies only point downwards.</div>
+</div>
+
+<div class="sub">
+<h2 id="s3-3">3.3 Explanation of each major layer / folder</h2>
+<pre class="tree">src/
+├── app/                      Routes only (Expo Router) – thin wrappers around feature screens
+│   ├── _layout.tsx           Root stack; start-up (open DB, run migrations, load stores)
+│   ├── (tabs)/               Bottom tabs: index (Today), records, insights, settings
+│   └── record/               new.tsx (modal form), [id].tsx (edit form)
+├── core/                     Shared, feature-independent code
+│   ├── database/             schema.ts, migrations.ts, seed.ts, database.ts (connection)
+│   ├── components/           Button, Card, Chip, FormField, DateField, ProgressBar, EmptyState…
+│   ├── hooks/                useAppBootstrap, useToday
+│   ├── theme/                Colours, spacing, typography, metric colour/icon mapping
+│   └── utils/                Date and number formatting
+├── features/
+│   ├── health-records/
+│   │   ├── model/            Types, validation rules, statistics (pure functions)
+│   │   ├── data/             Repository (SQL CRUD) + SQL query builder
+│   │   ├── state/            Zustand store – single source of truth for records
+│   │   ├── viewmodels/       useDashboardViewModel, useRecordListViewModel, useRecordFormViewModel
+│   │   └── views/            DashboardScreen, RecordListScreen, RecordFormScreen + components
+│   ├── goals/                Goals repository, store, settings view model, SettingsScreen
+│   └── insights/             Insights view model and screen
+└── test-utils/               In-memory repository used by tests</pre>
+<table>
+  <tr><th style="width:18%">Layer</th><th style="width:22%">Location</th><th>Responsibility</th></tr>
+  <tr><td><b>View</b></td><td><code>features/*/views</code>, <code>core/components</code></td><td>Render UI and forward user events. No SQL and no business rules. Reusable components (e.g. <code>FormField</code>, <code>DateField</code>, <code>MetricCard</code>) give a consistent look.</td></tr>
+  <tr><td><b>ViewModel</b></td><td><code>features/*/viewmodels</code></td><td>Custom hooks holding screen state (form values, errors, filters, loading), derived data (today’s totals, grouped sections) and actions (<code>submit</code>, <code>remove</code>, <code>pickDate</code>).</td></tr>
+  <tr><td><b>State</b></td><td><code>features/*/state</code></td><td>Global Zustand stores shared by all screens. After every write the store re-reads the data, so every subscribed screen updates automatically.</td></tr>
+  <tr><td><b>Model</b></td><td><code>features/*/model</code></td><td>TypeScript types, validation rules and statistics written as pure functions – no React and no database, so they are trivial to unit-test.</td></tr>
+  <tr><td><b>Data access</b></td><td><code>features/*/data</code></td><td>Repositories that run parameterised SQL and map database rows (snake_case) to objects (camelCase).</td></tr>
+  <tr><td><b>Database</b></td><td><code>core/database</code></td><td>Opens the single shared connection, creates tables, applies migrations and inserts dummy data.</td></tr>
+  <tr><td><b>Routing</b></td><td><code>app/</code></td><td>File-based navigation. Each file is a route that renders a feature screen.</td></tr>
+</table>
+</div>
+
+<div class="sub">
+<h2 id="s3-4">3.4 State-management approach</h2>
+<p>The app uses <b>Zustand</b> (v5) for global state. Zustand was selected over Redux Toolkit, Context API and MobX because it needs very little boilerplate (no reducers, actions or providers), supports asynchronous actions directly, and lets each component subscribe to exactly the slice of state it needs, which avoids unnecessary re-renders (Poimandres, 2026). It is the React Native counterpart to Provider/Riverpod mentioned in the brief.</p>
+<p>There are two stores:</p>
+<ul>
+  <li><code>healthStore</code> – holds every record (newest first), a load <code>status</code>, an <code>error</code> message and a <code>revision</code> counter, plus the actions <code>load</code>, <code>addRecord</code>, <code>updateRecord</code>, <code>deleteRecord</code>, <code>resetToSampleData</code> and <code>clearAll</code>.</li>
+  <li><code>goalsStore</code> – holds the daily goals and a <code>saveGoals</code> action.</li>
+</ul>
+<p>Short-lived <i>screen</i> state – for example the text typed in a form or the selected filter – is kept locally in the ViewModel with React’s <code>useState</code>, because no other screen needs it. This split keeps the global store small and predictable.</p>
+<p>The store is created by a <b>factory function</b> that receives the repository as a parameter (dependency injection). In the app it receives the SQLite repository; in tests it receives an in-memory fake:</p>
+<pre>export function createHealthStore(repository: HealthRecordRepository) {
+  return createStore&lt;HealthState&gt;()((set, get) =&gt; {
+    /** Re-reads all records from SQLite after a write. */
+    const sync = async () =&gt; {
+      const records = await repository.findAll({ sort: 'desc' });
+      set((s) =&gt; ({ records, revision: s.revision + 1, status: 'ready', error: null }));
+    };
+    return {
+      status: 'idle', error: null, records: [], revision: 0,
+      async addRecord(input) {
+        const id = await repository.create(input);
+        await sync();
+        return id;
+      },
+      // … load, updateRecord, deleteRecord, resetToSampleData, clearAll
+    };
+  });
+}
+export const healthStore = createHealthStore(healthRecordRepository);
+export function useHealthStore&lt;T&gt;(selector: (state: HealthState) =&gt; T): T {
+  return useStore(healthStore, selector);
+}</pre>
+<div class="code-caption">Code 1 – <code>features/health-records/state/healthStore.ts</code> (abridged)</div>
+<p>Components read state with selectors such as <code>useHealthStore((s) =&gt; s.records)</code>. When a record is added on the Add screen, the Dashboard and Insights screens re-render automatically because they are subscribed to <code>records</code>. The History screen runs its own filtered SQL query and simply re-runs it whenever <code>revision</code> changes, so the list is always in sync with the database.</p>
+</div>
+
+<!-- ============ 4 DATABASE ============ -->
+<div class="section">
+<h1 id="s4">4. Database Design</h1>
+<h2 id="s4-1">4.1 Database structure</h2>
+<p>The application uses a single SQLite database file, <code>healthmate.db</code>, stored in the app’s private sandbox on the device. It contains two tables:</p>
+<ul>
+  <li><code>health_records</code> – one row per activity entry. It contains the five columns required by the brief (<code>id</code>, <code>date</code>, <code>steps</code>, <code>calories</code>, <code>water</code>) plus an optional note and two timestamps.</li>
+  <li><code>app_settings</code> – a small key/value table used to store the user’s daily goals as JSON.</li>
+</ul>
+<p>Dates are stored as ISO text (<code>YYYY-MM-DD</code>). This format sorts correctly as text, so range queries such as <code>date BETWEEN ? AND ?</code> and <code>ORDER BY date</code> work without date functions, and an index on <code>date</code> keeps history queries fast. The schema version is tracked with SQLite’s <code>PRAGMA user_version</code>, so future changes can be added as numbered migration steps (SQLite, 2026).</p>
+
+<h2 id="s4-2">4.2 Entity / table diagram</h2>
+<figure><img class="diagram" src="diagrams/erd.svg" alt="ER diagram" style="width:92%"></figure>
+<div class="caption">Figure 2 – Table design of healthmate.db</div>
+
+<h2 id="s4-3">4.3 Field descriptions</h2>
+<table>
+  <tr><th style="width:15%">Field</th><th style="width:22%">Type / constraint</th><th>Description</th></tr>
+  <tr><td><code>id</code></td><td>INTEGER PRIMARY KEY AUTOINCREMENT</td><td>Unique identifier generated by SQLite; used to edit and delete a specific record.</td></tr>
+  <tr><td><code>date</code></td><td>TEXT NOT NULL, indexed</td><td>Calendar date of the activity in <code>YYYY-MM-DD</code> format (local time). Several records may share a date.</td></tr>
+  <tr><td><code>steps</code></td><td>INTEGER NOT NULL DEFAULT 0, CHECK ≥ 0</td><td>Number of steps walked (0 – 100,000 enforced in the app).</td></tr>
+  <tr><td><code>calories</code></td><td>INTEGER NOT NULL DEFAULT 0, CHECK ≥ 0</td><td>Calories burned in kcal (0 – 10,000).</td></tr>
+  <tr><td><code>water</code></td><td>INTEGER NOT NULL DEFAULT 0, CHECK ≥ 0</td><td>Water intake in millilitres (0 – 10,000).</td></tr>
+  <tr><td><code>note</code></td><td>TEXT NULL</td><td>Optional description, max. 200 characters (additional field).</td></tr>
+  <tr><td><code>created_at</code></td><td>TEXT DEFAULT datetime('now')</td><td>When the row was inserted (additional field).</td></tr>
+  <tr><td><code>updated_at</code></td><td>TEXT DEFAULT datetime('now')</td><td>Updated on every edit (additional field).</td></tr>
+  <tr><td><code>key</code> / <code>value</code></td><td>TEXT PRIMARY KEY / TEXT</td><td><code>app_settings</code>: setting name and JSON value, e.g. <code>daily_goals → {"steps":10000,"calories":500,"water":2500}</code>.</td></tr>
+</table>
+</div>
+
+<div class="sub">
+<h2 id="s4-4">4.4 Sample database code</h2>
+<p>The schema is defined once as SQL strings. <code>CHECK</code> constraints provide a second line of defence behind the form validation:</p>
+<pre>export const CREATE_HEALTH_RECORDS_TABLE = `
+CREATE TABLE IF NOT EXISTS health_records (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  date       TEXT    NOT NULL,
+  steps      INTEGER NOT NULL DEFAULT 0 CHECK (steps &gt;= 0),
+  calories   INTEGER NOT NULL DEFAULT 0 CHECK (calories &gt;= 0),
+  water      INTEGER NOT NULL DEFAULT 0 CHECK (water &gt;= 0),
+  note       TEXT,
+  created_at TEXT    NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT    NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_health_records_date ON health_records (date);`;</pre>
+<div class="code-caption">Code 2 – <code>core/database/schema.ts</code></div>
+<p>On first launch the migration creates the tables and inserts the dummy records inside one transaction, so the database is never left half-initialised:</p>
+<pre>export async function migrateDatabase(db: SQLiteDatabase): Promise&lt;void&gt; {
+  await db.execAsync('PRAGMA journal_mode = WAL;');
+  const row = await db.getFirstAsync&lt;{ user_version: number }&gt;('PRAGMA user_version');
+  let currentVersion = row?.user_version ?? 0;
+  if (currentVersion &gt;= DATABASE_VERSION) return;
+
+  if (currentVersion === 0) {
+    await db.withTransactionAsync(async () =&gt; {
+      await db.execAsync(CREATE_HEALTH_RECORDS_TABLE);
+      await db.execAsync(CREATE_APP_SETTINGS_TABLE);
+      await insertRecords(db, generateDummyRecords());   // 21 days of sample data
+    });
+    currentVersion = 1;
+  }
+  await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);
+}</pre>
+<div class="code-caption">Code 3 – <code>core/database/migrations.ts</code></div>
+
+<h2 id="s4-5">4.5 How the application communicates with SQLite</h2>
+<ol>
+  <li><b>Opening the connection.</b> <code>getDatabase()</code> in <code>core/database/database.ts</code> calls <code>openDatabaseAsync('healthmate.db')</code> once and caches the promise, so the whole app shares one connection. Migrations run before the promise resolves.</li>
+  <li><b>Start-up.</b> The root layout calls <code>useAppBootstrap()</code>, which awaits <code>getDatabase()</code> and then loads both stores. A splash screen is shown meanwhile; on failure the user sees the error and a “Try again” button.</li>
+  <li><b>Queries.</b> Repositories use the asynchronous expo-sqlite API: <code>getAllAsync</code> (many rows), <code>getFirstAsync</code> (one row), <code>runAsync</code> (INSERT/UPDATE/DELETE, returning <code>lastInsertRowId</code> and <code>changes</code>) and <code>withTransactionAsync</code> (atomic batches). Async calls run off the UI thread, so the interface stays responsive.</li>
+  <li><b>Parameter binding.</b> Every value is passed as a bound parameter (<code>?</code>), never concatenated into SQL, which prevents SQL injection (OWASP Foundation, 2024).</li>
+  <li><b>Mapping.</b> Rows such as <code>{ created_at: … }</code> are mapped into typed <code>HealthRecord</code> objects (<code>createdAt</code>) before leaving the repository.</li>
+</ol>
+<pre>const connection = getDatabase();                        // Promise&lt;SQLiteDatabase&gt;, opened once
+const rows = await (await connection).getAllAsync&lt;HealthRecordRow&gt;(
+  'SELECT * FROM health_records WHERE date &gt;= ? AND date &lt;= ? ORDER BY date DESC, id DESC',
+  ['2026-11-13', '2026-11-19'],
+);
+return rows.map(mapRow);                                  // → HealthRecord[]</pre>
+<div class="code-caption">Code 4 – Typical read through the repository</div>
+</div>
+
+<!-- ============ 5 CRUD ============ -->
+<div class="section">
+<h1 id="s5">5. CRUD Implementation</h1>
+<p>All four operations follow the same path: <b>View → ViewModel → Store → Repository → SQLite</b>. The ViewModel validates input, the store performs the write and refreshes its data, and every screen subscribed to the store updates. Figure 3 shows this for the Create operation.</p>
+<figure><img class="diagram" src="diagrams/sequence.svg" alt="Add record sequence"></figure>
+<div class="caption">Figure 3 – Sequence of calls when the user saves a new record</div>
+
+<h2 id="s5-1">5.1 Create</h2>
+<p>When the user taps <i>Save record</i>, the form ViewModel validates the raw text values. Only if validation passes does it call the store. Errors from the database are caught and shown in the form instead of crashing the app:</p>
+<pre>const submit = useCallback(async (): Promise&lt;boolean&gt; =&gt; {
+  setSubmitted(true);
+  const result = validateRecordForm(values);
+  setErrors(result.errors);
+  if (!result.valid) return false;            // show field errors, do not save
+
+  setSaving(true);
+  try {
+    if (isEditing) await updateRecord(recordId, result.data);
+    else await addRecord(result.data);
+    return true;                               // the screen then calls router.back()
+  } catch (e) {
+    setErrors({ form: e instanceof Error ? e.message : 'Could not save the record.' });
+    return false;
+  } finally {
+    setSaving(false);
+  }
+}, [values, isEditing, recordId, addRecord, updateRecord]);</pre>
+<div class="code-caption">Code 5 – <code>useRecordFormViewModel.ts</code>: one submit handles both Create and Update</div>
+<p>The repository then inserts the row and returns the new id:</p>
+<pre>async create(input) {
+  const result = await (await db()).runAsync(
+    'INSERT INTO health_records (date, steps, calories, water, note) VALUES (?, ?, ?, ?, ?)',
+    [input.date, input.steps, input.calories, input.water, input.note ?? null],
+  );
+  return result.lastInsertRowId;
+}</pre>
+<div class="code-caption">Code 6 – <code>healthRecordRepository.ts</code> – create</div>
+<p>Validation (<code>model/validation.ts</code>) treats blank fields as 0, rejects decimals, negatives and non-numeric text, enforces realistic maximums, rejects future dates, limits the note to 200 characters and requires at least one value greater than zero. After the first submit attempt, errors are re-checked on every keystroke so they disappear as soon as the user corrects them.</p>
+</div>
+
+<div class="sub">
+<h2 id="s5-2">5.2 Read (list, search and filter)</h2>
+<p>The Dashboard and Insights read from the store’s <code>records</code> array and compute totals with pure functions such as <code>summaryForDate()</code>. The History screen needs filtering, which is done in SQL. The ViewModel turns the UI state (quick filter, selected date, search text, sort order) into a <code>RecordFilter</code> object, and <code>buildRecordQuery()</code> converts it into a parameterised query:</p>
+<pre>export function buildRecordQuery(filter: RecordFilter = {}): SqlQuery {
+  const where: string[] = [];
+  const params: (string | number)[] = [];
+  if (filter.from)  { where.push('date &gt;= ?'); params.push(filter.from); }
+  if (filter.to)    { where.push('date &lt;= ?'); params.push(filter.to); }
+  if (filter.query) {
+    const q = parseDateQuery(filter.query);  // "15/11" → substr(date, 6, 5) = '11-15'
+    if (q) { where.push(`(${q.sql})`); params.push(...q.params); }
+  }
+  const order = filter.sort === 'asc' ? 'ASC' : 'DESC';
+  const sql = 'SELECT * FROM health_records'
+    + (where.length ? ` WHERE ${where.join(' AND ')}` : '')
+    + ` ORDER BY date ${order}, id ${order}`;
+  return { sql, params };
+}</pre>
+<div class="code-caption">Code 7 – <code>data/recordQuery.ts</code> – building the search/filter query</div>
+<p><code>parseDateQuery()</code> understands several date formats a user might type: ISO fragments (<code>2026-11</code>), day/month(/year) (<code>15/11</code>, <code>15/11/2026</code>) and month names (<code>Nov</code>, <code>November 2026</code>). Typing is debounced by 250 ms so SQLite is not queried on every keystroke. The results are grouped into sections by date, each with its daily totals, and shown in a <code>SectionList</code>.</p>
+
+<h2 id="s5-3">5.3 Update</h2>
+<p>Tapping a record opens <code>record/[id]</code>. The ViewModel loads the row with <code>findById(id)</code>, fills the form and, on save, calls <code>updateRecord</code>. If the row no longer exists, the repository throws an error, which the form shows to the user:</p>
+<pre>async update(id, input) {
+  const result = await (await db()).runAsync(
+    `UPDATE health_records
+        SET date = ?, steps = ?, calories = ?, water = ?, note = ?,
+            updated_at = datetime('now')
+      WHERE id = ?`,
+    [input.date, input.steps, input.calories, input.water, input.note ?? null, id],
+  );
+  if (result.changes === 0) throw new Error('Record not found. It may have been deleted.');
+}</pre>
+<div class="code-caption">Code 8 – <code>healthRecordRepository.ts</code> – update</div>
+
+<h2 id="s5-4">5.4 Delete</h2>
+<p>Deletion is available from the trash icon on every entry and from the Edit screen. A native confirmation dialog (<code>Alert.alert</code>) prevents accidental data loss. The store then removes the row and refreshes:</p>
+<pre>// View (RecordListScreen) – confirm first
+Alert.alert('Delete entry?', 'This entry will be removed.', [
+  { text: 'Cancel', style: 'cancel' },
+  { text: 'Delete', style: 'destructive', onPress: () =&gt; vm.deleteRecord(record.id) },
+]);
+
+// Repository
+async remove(id) {
+  await (await db()).runAsync('DELETE FROM health_records WHERE id = ?', [id]);
+}</pre>
+<div class="code-caption">Code 9 – Delete with confirmation</div>
+</div>
+
+<!-- ============ 6 LIBRARIES ============ -->
+<div class="section">
+<h1 id="s6">6. Third-Party Libraries</h1>
+<p>Only well-maintained libraries were used, and Expo-recommended modules were preferred so that every package is compatible with the same SDK version and runs in Expo Go without a custom native build. Versions were installed with <code>npx expo install</code>, which picks the version matching Expo SDK 58.</p>
+<table style="font-size:8.6pt">
+  <tr><th style="width:24%">Package (version)</th><th style="width:26%">Purpose</th><th>Why it was selected</th></tr>
+  <tr><td><b>expo</b> 58.0.26</td><td>App framework and build tooling</td><td>Provides a managed workflow, Expo Go for testing on real devices and simulators, and a consistent set of native modules without opening Xcode or Android Studio.</td></tr>
+  <tr><td><b>react-native</b> 0.88.1, <b>react</b> 19.3</td><td>Cross-platform UI</td><td>One TypeScript codebase produces native iOS and Android interfaces.</td></tr>
+  <tr><td><b>expo-sqlite</b> 58.0.18</td><td>Embedded SQLite database</td><td>The React Native equivalent of <code>sqflite</code>. It has a modern async API (<code>runAsync</code>, <code>getAllAsync</code>, transactions), works in Expo Go and is maintained by Expo.</td></tr>
+  <tr><td><b>zustand</b> 5.1.0</td><td>Global state management</td><td>Minimal boilerplate, selector-based subscriptions (fewer re-renders), easy async actions and a vanilla store that can be unit-tested without React.</td></tr>
+  <tr><td><b>expo-router</b> 58.0.32</td><td>Navigation</td><td>File-based routing (tabs, stack, modal) recommended by Expo; built on React Navigation; supports deep links such as <code>healthmate://record/12</code>.</td></tr>
+  <tr><td><b>react-native-screens</b>, <b>react-native-safe-area-context</b></td><td>Native screen containers, notch/safe areas</td><td>Required by Expo Router; give native performance and keep content clear of the notch and home indicator.</td></tr>
+  <tr><td><b>@react-native-community/datetimepicker</b> 9.2.1</td><td>Native date picker</td><td>Shows the platform’s own picker (Android dialog, iOS calendar), supports a maximum date to block future entries and is included in Expo Go.</td></tr>
+  <tr><td><b>@expo/vector-icons</b> 15 (Ionicons)</td><td>Icons</td><td>Large, consistent icon set (footsteps, flame, water, calendar, trash) that matches both iOS and Android styles.</td></tr>
+  <tr><td><b>expo-font</b>, <b>expo-asset</b></td><td>Font/asset loading</td><td>Required by the icon fonts (see Issue 1 in Section 9).</td></tr>
+  <tr><td><b>expo-status-bar</b></td><td>Status bar styling</td><td>Keeps the status bar readable on the light background.</td></tr>
+  <tr><td><b>jest</b> 30 + <b>jest-expo</b> 58</td><td>Test runner</td><td>Standard JavaScript test runner; the <code>jest-expo</code> preset mocks native modules so tests run quickly in Node.</td></tr>
+  <tr><td><b>@testing-library/react-native</b> 14.1</td><td>Component/hook tests</td><td>Tests components and hooks the way a user interacts with them (by text, test IDs and press events).</td></tr>
+  <tr><td><b>typescript</b> 6.0, <b>eslint</b> 9 + <b>eslint-config-expo</b></td><td>Static checking</td><td>Strict typing catches errors at compile time; ESLint enforces React Hooks rules.</td></tr>
+</table>
+<p>Alternatives considered: <i>react-native-sqlite-storage</i> (needs a custom native build, older callback API), <i>Redux Toolkit</i> (more boilerplate than this project needs), <i>React Navigation</i> used directly (more manual configuration than Expo Router) and charting libraries (removed in favour of a simpler, text-based Insights screen).</p>
+</div>
+
+<!-- ============ 7 UI/UX ============ -->
+<div class="section">
+<h1 id="s7">7. UI / UX Design</h1>
+<h2 id="s7-1">7.1 Wireframes</h2>
+<p>Low-fidelity wireframes were drawn first to agree the layout and content of each screen before any styling was applied. They follow the order in which a user normally works: check today’s summary (W1), look back at history (W2), add or correct an entry (W3) and review trends (W4).</p>
+<figure><img class="diagram" src="diagrams/wireframes.svg" alt="Wireframes"></figure>
+<div class="caption">Figure 4 – Low-fidelity wireframes (W1–W4)</div>
+
+<h2 id="s7-2">7.2 Final screenshots</h2>
+<div class="shots">
+  <figure><img src="img/shot-01-dashboard.png"><figcaption>Dashboard (Today)</figcaption></figure>
+  <figure><img src="img/history.png"><figcaption>History with search &amp; filters</figcaption></figure>
+  <figure><img src="img/add-record.png"><figcaption>Add Record form</figcaption></figure>
+</div>
+<div class="caption">Figure 5 – Final application screenshots (iOS Simulator)</div>
+</div>
+<div class="sub">
+<div class="shots">
+  <figure><img src="img/tc05-edit-form.png"><figcaption>Edit Record</figcaption></figure>
+  <figure><img src="img/shot-04-insights.png"><figcaption>Insights</figcaption></figure>
+  <figure><img src="img/shot-05-settings.png"><figcaption>Settings (goals &amp; data)</figcaption></figure>
+</div>
+<div class="caption">Figure 6 – Final application screenshots (continued)</div>
+
+<h2 id="s7-3">7.3 Design decisions</h2>
+<h3>Simplicity</h3>
+<p>An earlier version included decorative elements (a coloured banner, streak counter, animated pop-ups and bar charts). Following feedback during development, these were removed in favour of a flat, minimal design: bordered cards, plain text and a single accent colour. This follows the heuristic of <i>aesthetic and minimalist design</i> – every element on screen should be relevant to the task (Nielsen, 2024).</p>
+<h3>Colour scheme</h3>
+<table>
+  <tr><th>Colour</th><th>Use</th><th>Reason</th></tr>
+  <tr><td><span class="swatch" style="background:#16A34A"></span>Green #16A34A</td><td>Steps</td><td>Associated with movement and progress.</td></tr>
+  <tr><td><span class="swatch" style="background:#EF4444"></span>Red #EF4444</td><td>Calories</td><td>Associated with energy/heat (flame), as suggested in the brief.</td></tr>
+  <tr><td><span class="swatch" style="background:#2563EB"></span>Blue #2563EB</td><td>Water</td><td>Universally associated with water, as suggested in the brief.</td></tr>
+  <tr><td><span class="swatch" style="background:#4F46E5"></span>Indigo #4F46E5</td><td>Primary actions, active tab, links</td><td>Neutral accent that does not clash with the three metric colours.</td></tr>
+  <tr><td><span class="swatch" style="background:#DC2626"></span>Red #DC2626 on pink</td><td>Errors, Delete buttons</td><td>Clearly signals danger and invalid input.</td></tr>
+  <tr><td><span class="swatch" style="background:#F4F6FB"></span>Light grey #F4F6FB / white</td><td>Background / cards</td><td>Soft contrast that makes white cards stand out without shadows.</td></tr>
+</table>
+<p>Colour is never the only signal: every metric also has an icon and a text label, and errors include a message, which supports users with colour-vision deficiency (W3C, 2023). The same colour/icon pair is used for each metric everywhere in the app (dashboard cards, list rows, form fields, insights).</p>
+</div>
+
+<div class="sub">
+<h3>Navigation flow</h3>
+<p>A bottom tab bar gives one-tap access to the four main areas – the standard navigation pattern on both iOS and Android for 3–5 top-level destinations (Google, 2024; Apple, 2024). Adding a record opens as a <b>modal</b> because it is a short, self-contained task; editing is <b>pushed</b> onto the stack with a “Back” button because it starts from a specific item.</p>
+<figure><img class="diagram" src="diagrams/navigation.svg" alt="Navigation flow"></figure>
+<div class="caption">Figure 7 – Navigation flow</div>
+<h3>Icons and components</h3>
+<table>
+  <tr><th style="width:26%">Component / icon</th><th>Why it was used</th></tr>
+  <tr><td>Floating action button (+)</td><td>Material Design’s primary-action pattern; the most frequent task (adding a record) is always one tap away.</td></tr>
+  <tr><td>MetricCard with progress bar</td><td>Shows value, unit and goal progress at a glance without needing charts.</td></tr>
+  <tr><td>Ionicons <i>footsteps, flame, water</i></td><td>Instantly recognisable symbols for each metric, reused consistently.</td></tr>
+  <tr><td>Chips (All / Today / Last 7 days / This month)</td><td>Common filters in one tap instead of typing.</td></tr>
+  <tr><td>Native date picker</td><td>Familiar platform control; future dates disabled to prevent invalid input.</td></tr>
+  <tr><td>FormField with inline error text</td><td>Errors appear next to the field that caused them, with a red border, and clear as soon as the value is fixed.</td></tr>
+  <tr><td>Confirmation alerts</td><td>Prevent accidental deletion (error prevention heuristic).</td></tr>
+  <tr><td>Empty-state messages</td><td>Explain why a list is empty and offer the next action (“Clear filters”).</td></tr>
+  <tr><td>Numeric keypad, “Next” key</td><td>Faster, error-free numeric entry on mobile.</td></tr>
+</table>
+<p>Touch targets are at least 44 pt high, which meets Apple’s Human Interface Guidelines, and text uses the system font for readability on both platforms.</p>
+</div>
+
+<!-- ============ 8 TESTING ============ -->
+<div class="section">
+<h1 id="s8">8. Test Cases</h1>
+<p>Testing was carried out at two levels: <b>manual functional testing</b> on the iOS Simulator (iPhone 17 Pro Max) and <b>automated tests</b> with Jest. All ten manual test cases below were executed on 19 November 2026; screenshots are provided as evidence.</p>
+<h2 id="s8-1">8.1 Manual test cases</h2>
+<table>
+  <tr><th style="width:6%">ID</th><th style="width:17%">Test scenario</th><th style="width:21%">Input / steps</th><th style="width:22%">Expected result</th><th style="width:26%">Actual result</th><th style="width:8%">Status</th></tr>
+  <tr><td>TC-01</td><td>Dashboard shows today’s summary from the database</td><td>Open the app on a fresh install</td><td>Tables created, sample data inserted; Today card shows 7,850 steps, 420 kcal, 2,000 ml</td><td>Dashboard showed “Today – 19 November 2026” with 7,850 steps, 420 kcal, 2,000 ml and two entries</td><td class="pass">Pass</td></tr>
+  <tr><td>TC-02</td><td>Add record with all fields empty</td><td>Tap +, leave all values blank, tap Save record</td><td>Record not saved; message “Enter at least one activity value greater than zero.”</td><td>Error banner displayed; form stayed open; no record added</td><td class="pass">Pass</td></tr>
+  <tr><td>TC-03</td><td>Invalid number in Steps</td><td>Steps = <code>12.5</code></td><td>Inline error “Steps must be a whole number…”; field highlighted red</td><td>Error shown under the Steps field with red border while typing</td><td class="pass">Pass</td></tr>
+  <tr><td>TC-04</td><td>Add a valid record (Create)</td><td>Steps = <code>1000</code>, date = today, Save</td><td>Form closes; new entry listed; today’s steps increase by 1,000</td><td>Returned to dashboard; steps 7,850 → 8,850; new entry “1,000 · 0 kcal · 0 ml” listed</td><td class="pass">Pass</td></tr>
+  <tr><td>TC-05</td><td>Edit an existing record (Update)</td><td>Tap the 1,000 entry, change Steps to <code>2000</code>, Save changes</td><td>Record updated; total steps increase by 1,000</td><td>Edit screen pre-filled; after saving steps showed 9,850 and the entry 2,000</td><td class="pass">Pass</td></tr>
+  <tr><td>TC-06</td><td>Delete a record (Delete)</td><td>Tap trash icon on the 2,000 entry → Delete</td><td>Confirmation dialog; record removed; totals updated</td><td>“Delete entry?” dialog shown; entry removed; steps back to 7,850</td><td class="pass">Pass</td></tr>
+  <tr><td>TC-07</td><td>Search by date</td><td>History → search <code>15/11</code></td><td>Only records for 15 November shown</td><td>“1 entry” – Sun, 15 Nov 2026 (12,700 steps)</td><td class="pass">Pass</td></tr>
+  <tr><td>TC-08</td><td>Search with no matches</td><td>Search <code>15/11/2020</code></td><td>Empty state with “No matching records” and Clear filters</td><td>“0 entries”, empty-state message and Clear filters button displayed</td><td class="pass">Pass</td></tr>
+  <tr><td>TC-09</td><td>Quick filter by date range</td><td>Clear filters, tap “Last 7 days”</td><td>Only records from 13–19 Nov listed</td><td>Count changed from 27 to 8 entries; chip highlighted</td><td class="pass">Pass</td></tr>
+  <tr><td>TC-10</td><td>Change daily goal</td><td>Settings → Steps goal <code>7000</code> → Save goals → Today</td><td>“Goals saved”; dashboard shows Goal: 7,000 and a full progress bar</td><td>Confirmation shown; dashboard showed “Goal: 7,000 steps” with full bar</td><td class="pass">Pass</td></tr>
+</table>
+</div>
+
+<div class="sub">
+<h2 id="s8-2">8.2 Test evidence</h2>
+<div class="shots four">
+  <figure><img src="img/tc01-dashboard.png"><figcaption>TC-01 Dashboard</figcaption></figure>
+  <figure><img src="img/tc02-empty-validation.png"><figcaption>TC-02 Empty form</figcaption></figure>
+  <figure><img src="img/tc03-decimal-validation.png"><figcaption>TC-03 Decimal steps</figcaption></figure>
+  <figure><img src="img/tc04-add-valid.png"><figcaption>TC-04 Record added</figcaption></figure>
+</div>
+<div class="shots four">
+  <figure><img src="img/tc05-edit-form.png"><figcaption>TC-05 Editing</figcaption></figure>
+  <figure><img src="img/tc05-edit-result.png"><figcaption>TC-05 Updated</figcaption></figure>
+  <figure><img src="img/tc06-delete-confirm.png"><figcaption>TC-06 Confirm</figcaption></figure>
+  <figure><img src="img/tc06-delete-result.png"><figcaption>TC-06 Deleted</figcaption></figure>
+</div>
+</div>
+<div class="sub">
+<div class="shots four">
+  <figure><img src="img/tc07-search.png"><figcaption>TC-07 Search 15/11</figcaption></figure>
+  <figure><img src="img/tc08-no-results.png"><figcaption>TC-08 No results</figcaption></figure>
+  <figure><img src="img/tc09-filter-7days.png"><figcaption>TC-09 Last 7 days</figcaption></figure>
+  <figure><img src="img/tc10-goals-saved.png"><figcaption>TC-10 Goals saved</figcaption></figure>
+</div>
+<div class="caption">Figure 8 – Evidence for TC-01 to TC-10</div>
+
+<h2 id="s8-3">8.3 Automated tests</h2>
+<p>In addition to manual testing, <b>71 automated tests in 9 suites</b> were written with Jest and React Native Testing Library. They run in about one second with <code>npm test</code> and all pass. The pure Model functions and the store were designed to be testable: the store receives a repository through its factory, so tests use an in-memory fake instead of a real database, and the SQLite repository is tested against a mocked connection that records every SQL statement.</p>
+<table>
+  <tr><th style="width:38%">Test suite</th><th style="width:10%">Type</th><th>What is verified</th></tr>
+  <tr><td>core/utils/date.test.ts</td><td>Unit</td><td>ISO date validation (incl. leap years), adding days across months/years, relative labels, number and water formatting</td></tr>
+  <tr><td>core/database/database.test.ts</td><td>Unit</td><td>Dummy data covers 21 days, matches the brief’s example, is deterministic; migration creates the required schema and is skipped when up to date</td></tr>
+  <tr><td>model/validation.test.ts</td><td>Unit</td><td>Every form and goal validation rule (empty, decimals, negatives, limits, future date, note length)</td></tr>
+  <tr><td>model/stats.test.ts</td><td>Unit</td><td>Daily totals across multiple entries, zero-filled series, progress clamping, averages, best day, goal days</td></tr>
+  <tr><td>data/recordQuery.test.ts</td><td>Unit</td><td>Date search parsing, SQL building, bound parameters and SQL-injection safety</td></tr>
+  <tr><td>data/healthRecordRepository.test.ts</td><td>Unit (mock DB)</td><td>Row mapping and every CRUD statement with its parameters; “not found” on update; transactional reset</td></tr>
+  <tr><td>state/healthStore.test.ts</td><td>Integration</td><td>Create → update → delete through the store, revision counter, error state</td></tr>
+  <tr><td>viewmodels/viewModels.test.tsx</td><td>Integration</td><td>Filter building, grouping, form ViewModel: validation errors, saving, loading for edit, not-found</td></tr>
+  <tr><td>views/components.test.tsx</td><td>Component</td><td>MetricCard renders value/goal; RecordListItem renders values and fires press/delete events</td></tr>
+</table>
+<pre>PASS  src/features/health-records/views/__tests__/components.test.tsx
+PASS  src/features/health-records/viewmodels/__tests__/viewModels.test.tsx
+PASS  src/features/health-records/state/__tests__/healthStore.test.ts
+…
+Test Suites: 9 passed, 9 total
+Tests:       71 passed, 71 total</pre>
+<div class="code-caption">Code 10 – Output of <code>npm test</code></div>
+<p>Static checks were also run before each milestone: <code>npx tsc --noEmit</code> (no type errors), <code>npx eslint .</code> (no lint errors) and <code>npx expo-doctor</code> (20/20 checks passed).</p>
+</div>
+
+<!-- ============ 9 ISSUES ============ -->
+<div class="section">
+<h1 id="s9">9. Issues / Errors &amp; Fixes</h1>
+<p>The following significant problems were encountered during development. Each was diagnosed from the error output and fixed at its root cause.</p>
+<table style="font-size:8.5pt">
+  <tr><th style="width:4%">#</th><th style="width:30%">Problem</th><th style="width:30%">Cause</th><th>Fix</th></tr>
+  <tr><td>1</td><td>Component tests failed with <code>Cannot find module 'expo-asset' from 'expo-font/build/FontLoader.js'</code>.</td><td><code>@expo/vector-icons</code> depends on <code>expo-font</code>, which needs <code>expo-asset</code>; neither was installed. The icons would also have failed at run time.</td><td>Installed both with <code>npx expo install expo-asset expo-font</code> so SDK-compatible versions were chosen. All suites then passed.</td></tr>
+  <tr><td>2</td><td><code>npm install zustand</code> failed with <code>ERESOLVE … react-dom@19.3.1 … Found: react@19.3.0</code>.</td><td>A transitive dependency pulled in a newer <code>react-dom</code> than the React version pinned by Expo.</td><td>Installed <code>react-dom</code> through <code>npx expo install</code> (matching React 19.3.0), after which zustand installed cleanly.</td></tr>
+  <tr><td>3</td><td>TypeScript error TS2322 on <code>forwardRef</code> in <code>FormField</code>, and <code>Property 'focus' does not exist</code> on the input ref.</td><td>React 19 passes <code>ref</code> as a normal prop, and React Native 0.88 types the input instance as <code>TextInputInstance</code>, not <code>TextInput</code>.</td><td>Removed <code>forwardRef</code>, accepted <code>ref?: Ref&lt;TextInputInstance&gt;</code> as a prop and typed refs with <code>useRef&lt;TextInputInstance&gt;</code>.</td></tr>
+  <tr><td>4</td><td>ESLint errors <code>react-hooks/set-state-in-effect</code> (“Calling setState synchronously within an effect can trigger cascading renders”).</td><td>The History ViewModel set <code>loading=true</code> at the start of an effect; start-up and Settings also set state synchronously in effects.</td><td>Refactored: loading is now <i>derived</i> by comparing the current query key with the key of the last result; start-up uses an attempt counter; Settings keeps an unsaved “draft” instead of copying store values in an effect.</td></tr>
+  <tr><td>5</td><td><code>tsc</code> reported <code>Cannot find name 'describe' / 'expect'</code> in every test file although Jest ran correctly.</td><td>TypeScript 6 no longer includes all <code>@types</code> packages automatically.</td><td>Added <code>"types": ["jest"]</code> to <code>tsconfig.json</code>.</td></tr>
+  <tr><td>6</td><td>The dashboard was empty on the day after the app was first installed.</td><td>Dummy records are generated relative to the date of first launch, so “today” moved past the seeded data.</td><td>Kept the realistic behaviour, and added a “Reset to sample data” action in Settings that regenerates the 21 days ending on the current date (one transaction).</td></tr>
+  <tr><td>7</td><td>The Edit screen’s back button was labelled “(tabs)”.</td><td>iOS uses the previous route’s name, and the tab group is named <code>(tabs)</code>.</td><td>Set <code>headerBackTitle: 'Back'</code> in the root stack options.</td></tr>
+  <tr><td>8</td><td>“Failed to compile – Syntax Error” red screen while simplifying the UI.</td><td>An automated text edit to <code>EmptyState.tsx</code> removed the wrong lines, leaving an invalid style object.</td><td>Rewrote the component and adopted a rule of running <code>tsc</code> and ESLint after every change before reloading the app.</td></tr>
+  <tr><td>9</td><td><code>npx expo lint</code> stopped with “requires ESLint version 8.57.0 or greater” although ESLint 9 was installed.</td><td>Version-detection problem in the Expo CLI wrapper.</td><td>Ran ESLint directly with <code>npx eslint .</code>, using the generated <code>eslint.config.js</code>.</td></tr>
+  <tr><td>10</td><td>TypeScript error TS2783 “'key' is specified more than once” on the dashboard metric cards.</td><td>The metric objects (which contain a <code>key</code> field) were spread into <code>&lt;MetricCard {...m} /&gt;</code> after an explicit <code>key</code> prop.</td><td>Passed the card’s props explicitly instead of spreading the whole object.</td></tr>
+</table>
+</div>
+
+<!-- ============ 10 VERSION CONTROL ============ -->
+<div class="section">
+<h1 id="s10">10. Version Control</h1>
+<p>Git was used for version control, with the project hosted on GitHub.</p>
+<table>
+  <tr><th style="width:26%">Item</th><th>Details</th></tr>
+  <tr><td>Repository link</td><td><a href="https://github.com/dulangidel/HealthMate">https://github.com/dulangidel/HealthMate</a></td></tr>
+  <tr><td>Branch</td><td><code>main</code> – every commit leaves the app building, type-checking and passing its tests</td></tr>
+  <tr><td>Branching strategy</td><td>As a single-developer project, work was committed directly to <code>main</code> in small, self-contained steps, each adding one layer or feature on top of the last. Feature branches would be used if more developers joined.</td></tr>
+  <tr><td>Commit convention</td><td>Conventional Commits: <code>feat:</code>, <code>test:</code>, <code>docs:</code>, <code>chore:</code> with an optional scope, e.g. <code>feat(db):</code> – one logical change per commit</td></tr>
+  <tr><td>Ignored files</td><td><code>node_modules/</code>, <code>.expo/</code>, <code>dist/</code>, local <code>.env*.local</code> files and signing keys (<code>*.jks</code>, <code>*.p12</code>, <code>*.key</code>). The <code>ios/</code> and <code>android/</code> folders are never committed because Expo generates them at build time.</td></tr>
+</table>
+
+<h2>10.1 Development history</h2>
+<p>The full commit history of <code>main</code> (output of <code>git log --reverse</code>, oldest first):</p>
+<table>
+  <tr><th style="width:11%">Commit</th><th style="width:22%">Date</th><th>Message</th></tr>
+  <tr><td><code>6f84fdd</code></td><td>17 Nov 2026, 21:08</td><td>chore: create Expo project and configure Router, TypeScript, Jest and ESLint</td></tr>
+  <tr><td><code>8d19a21</code></td><td>17 Nov 2026, 21:16</td><td>feat(core): add theme, date/number utils and shared UI components</td></tr>
+  <tr><td><code>02b7e76</code></td><td>17 Nov 2026, 21:24</td><td>feat(db): add SQLite schema, migrations and dummy data</td></tr>
+  <tr><td><code>ffa0ddf</code></td><td>17 Nov 2026, 21:35</td><td>feat(data): add record model, validation, repositories and Zustand stores</td></tr>
+  <tr><td><code>a366baa</code></td><td>18 Nov 2026, 16:02</td><td>feat(dashboard): add navigation layout and today's summary screen</td></tr>
+  <tr><td><code>0e0c93f</code></td><td>18 Nov 2026, 16:12</td><td>feat(records): add/edit/delete form and history list with date search</td></tr>
+  <tr><td><code>a3af2d7</code></td><td>18 Nov 2026, 16:21</td><td>feat(insights,settings): add insights summary and daily goals settings</td></tr>
+  <tr><td><code>656e3ee</code></td><td>18 Nov 2026, 16:30</td><td>test: add unit, integration and component tests</td></tr>
+  <tr><td>(latest)</td><td>19 Nov 2026, 10:28</td><td>docs: add README, screenshots and technical report</td></tr>
+</table>
+<p>The commits follow the architecture from the bottom up: project setup first, then shared core code, the SQLite layer, the model/repository/state layer, each screen in turn, the tests and finally the documentation. Small commits like these make each change easy to review, show exactly when a problem was introduced and allow a quick return to a working version if needed.</p>
+</div>
+
+<!-- ============ 11 CONCLUSION ============ -->
+<div class="section">
+<h1 id="s11">11. Conclusion</h1>
+<p>HealthMate meets all the core requirements of the coursework. Users can add, view, update and delete daily health records; search and filter them by date; and see a clear summary of the current day. Data is stored in an embedded SQLite database with the required <code>health_records</code> table, accessed through parameterised queries, and seeded with dummy records for testing.</p>
+<p>The application is structured with MVVM and feature-based folders, uses Zustand for state management and isolates all SQL in repositories. This separation proved valuable in practice: the screens could be completely redesigned (Section 7.3) without changing any business logic or database code, and 71 automated tests could check validation, queries and CRUD behaviour without a device. Ten manual test cases on the iOS Simulator confirmed the end-to-end behaviour.</p>
+<h2>11.1 Limitations and future work</h2>
+<ul>
+  <li><b>Automatic tracking</b> – read steps from Apple Health / Google Health Connect instead of manual entry.</li>
+  <li><b>Cloud backup and sync</b> – add a second repository implementation that talks to a REST API.</li>
+  <li><b>Reminders</b> – local notifications to drink water or log activity.</li>
+  <li><b>Dark mode and localisation</b> – the colour tokens in the theme make a dark palette straightforward.</li>
+  <li><b>End-to-end tests</b> – automate the manual test cases with a tool such as Maestro or Detox.</li>
+</ul>
+<p>Overall, the project demonstrated how mobile UI development, state management, local databases, validation, testing and version control fit together in a maintainable cross-platform application.</p>
+</div>
+
+<!-- ============ 12 REFERENCES ============ -->
+<div class="section">
+<h1 id="s12">12. References</h1>
+<p style="text-align:left">Apple Inc. (2024) <i>Human Interface Guidelines: Tab bars</i>. Available at: https://developer.apple.com/design/human-interface-guidelines/tab-bars (Accessed: 19 November 2026).</p>
+<p style="text-align:left">Expo (2026a) <i>Expo documentation (SDK 58)</i>. Available at: https://docs.expo.dev/versions/v58.0.0/ (Accessed: 19 November 2026).</p>
+<p style="text-align:left">Expo (2026b) <i>SQLite – expo-sqlite</i>. Available at: https://docs.expo.dev/versions/latest/sdk/sqlite/ (Accessed: 19 November 2026).</p>
+<p style="text-align:left">Expo (2026c) <i>Introduction to Expo Router</i>. Available at: https://docs.expo.dev/router/introduction/ (Accessed: 19 November 2026).</p>
+<p style="text-align:left">Fowler, M. (2002) <i>Patterns of Enterprise Application Architecture</i>. Boston: Addison-Wesley.</p>
+<p style="text-align:left">Gossman, J. (2005) <i>Introduction to Model/View/ViewModel pattern for building WPF apps</i>. Available at: https://learn.microsoft.com/en-us/archive/blogs/johngossman/introduction-to-modelviewviewmodel-pattern-for-building-wpf-apps (Accessed: 19 November 2026).</p>
+<p style="text-align:left">Google (2024) <i>Material Design 3: Navigation bar</i>. Available at: https://m3.material.io/components/navigation-bar/overview (Accessed: 19 November 2026).</p>
+<p style="text-align:left">Meta Platforms (2026) <i>React Native documentation</i>. Available at: https://reactnative.dev/docs/getting-started (Accessed: 19 November 2026).</p>
+<p style="text-align:left">Meta Platforms (2026) <i>Jest documentation</i>. Available at: https://jestjs.io/docs/getting-started (Accessed: 19 November 2026).</p>
+<p style="text-align:left">Nielsen, J. (2024) <i>10 Usability Heuristics for User Interface Design</i>. Nielsen Norman Group. Available at: https://www.nngroup.com/articles/ten-usability-heuristics/ (Accessed: 19 November 2026).</p>
+<p style="text-align:left">OWASP Foundation (2024) <i>SQL Injection Prevention Cheat Sheet</i>. Available at: https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html (Accessed: 19 November 2026).</p>
+<p style="text-align:left">Poimandres (2026) <i>Zustand: bear necessities for state management in React</i>. Available at: https://github.com/pmndrs/zustand (Accessed: 19 November 2026).</p>
+<p style="text-align:left">SQLite (2026) <i>SQLite documentation: PRAGMA user_version</i>. Available at: https://www.sqlite.org/pragma.html#pragma_user_version (Accessed: 19 November 2026).</p>
+<p style="text-align:left">Testing Library (2026) <i>React Native Testing Library</i>. Available at: https://callstack.github.io/react-native-testing-library/ (Accessed: 19 November 2026).</p>
+<p style="text-align:left">W3C (2023) <i>Web Content Accessibility Guidelines (WCAG) 2.2 – Use of Color (1.4.1)</i>. Available at: https://www.w3.org/TR/WCAG22/ (Accessed: 19 November 2026).</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" font-family="Helvetica, Arial, sans-serif" font-size="13">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="800" height="560" fill="#ffffff"/>
+
+  <!-- layer labels -->
+  <g font-size="11" font-weight="bold" fill="#475569" text-anchor="end">
+    <text x="118" y="62">VIEW</text>
+    <text x="118" y="152">VIEWMODEL</text>
+    <text x="118" y="242">STATE</text>
+    <text x="118" y="332">MODEL</text>
+    <text x="118" y="422">DATA ACCESS</text>
+    <text x="118" y="512">DATABASE</text>
+  </g>
+
+  <!-- View -->
+  <rect x="130" y="25" width="650" height="64" rx="8" fill="#EEF2FF" stroke="#4F46E5"/>
+  <g fill="#ffffff" stroke="#4F46E5">
+    <rect x="142" y="40" width="114" height="34" rx="5"/><rect x="268" y="40" width="114" height="34" rx="5"/>
+    <rect x="394" y="40" width="114" height="34" rx="5"/><rect x="520" y="40" width="114" height="34" rx="5"/>
+    <rect x="646" y="40" width="122" height="34" rx="5"/>
+  </g>
+  <g text-anchor="middle" fill="#1e1b4b" font-size="12">
+    <text x="199" y="61">DashboardScreen</text><text x="325" y="61">RecordListScreen</text>
+    <text x="451" y="61">RecordFormScreen</text><text x="577" y="61">InsightsScreen</text>
+    <text x="707" y="61">SettingsScreen</text>
+  </g>
+
+  <!-- ViewModel -->
+  <rect x="130" y="115" width="650" height="64" rx="8" fill="#F0FDF4" stroke="#16A34A"/>
+  <g fill="#ffffff" stroke="#16A34A">
+    <rect x="142" y="130" width="114" height="34" rx="5"/><rect x="268" y="130" width="114" height="34" rx="5"/>
+    <rect x="394" y="130" width="114" height="34" rx="5"/><rect x="520" y="130" width="114" height="34" rx="5"/>
+    <rect x="646" y="130" width="122" height="34" rx="5"/>
+  </g>
+  <g text-anchor="middle" fill="#14532d" font-size="10.5">
+    <text x="199" y="151">useDashboardVM</text><text x="325" y="151">useRecordListVM</text>
+    <text x="451" y="151">useRecordFormVM</text><text x="577" y="151">useInsightsVM</text>
+    <text x="707" y="151">useSettingsVM</text>
+  </g>
+
+  <!-- State -->
+  <rect x="130" y="205" width="650" height="64" rx="8" fill="#FFF7ED" stroke="#EA580C"/>
+  <g fill="#ffffff" stroke="#EA580C">
+    <rect x="200" y="220" width="230" height="34" rx="5"/><rect x="480" y="220" width="230" height="34" rx="5"/>
+  </g>
+  <g text-anchor="middle" fill="#7c2d12" font-size="12">
+    <text x="315" y="241">healthStore (Zustand) – records</text>
+    <text x="595" y="241">goalsStore (Zustand) – goals</text>
+  </g>
+
+  <!-- Model -->
+  <rect x="130" y="295" width="650" height="64" rx="8" fill="#FDF4FF" stroke="#A21CAF"/>
+  <g fill="#ffffff" stroke="#A21CAF">
+    <rect x="142" y="310" width="150" height="34" rx="5"/><rect x="304" y="310" width="150" height="34" rx="5"/>
+    <rect x="466" y="310" width="150" height="34" rx="5"/><rect x="628" y="310" width="140" height="34" rx="5"/>
+  </g>
+  <g text-anchor="middle" fill="#581c87" font-size="12">
+    <text x="217" y="331">HealthRecord types</text><text x="379" y="331">validation.ts</text>
+    <text x="541" y="331">stats.ts</text><text x="698" y="331">recordQuery.ts</text>
+  </g>
+
+  <!-- Data access -->
+  <rect x="130" y="385" width="650" height="64" rx="8" fill="#F1F5F9" stroke="#475569"/>
+  <g fill="#ffffff" stroke="#475569">
+    <rect x="200" y="400" width="230" height="34" rx="5"/><rect x="480" y="400" width="230" height="34" rx="5"/>
+  </g>
+  <g text-anchor="middle" fill="#0f172a" font-size="12">
+    <text x="315" y="421">HealthRecordRepository</text>
+    <text x="595" y="421">GoalsRepository</text>
+  </g>
+
+  <!-- DB -->
+  <rect x="130" y="475" width="650" height="64" rx="8" fill="#EFF6FF" stroke="#2563EB"/>
+  <path d="M370 488 q85 -14 170 0 v32 q-85 14 -170 0 z" fill="#ffffff" stroke="#2563EB"/>
+  <path d="M370 488 q85 14 170 0" fill="none" stroke="#2563EB"/>
+  <text x="455" y="514" text-anchor="middle" fill="#1e3a8a" font-size="12">healthmate.db (expo-sqlite)</text>
+  <text x="200" y="512" fill="#1e3a8a" font-size="11">health_records</text>
+  <text x="620" y="512" fill="#1e3a8a" font-size="11">app_settings</text>
+
+  <!-- arrows -->
+  <g stroke="#475569" stroke-width="1.4" marker-end="url(#a)">
+    <line x1="455" y1="89" x2="455" y2="113"/>
+    <line x1="455" y1="179" x2="455" y2="203"/>
+    <line x1="455" y1="269" x2="455" y2="293"/>
+    <line x1="455" y1="359" x2="455" y2="383"/>
+    <line x1="455" y1="449" x2="455" y2="473"/>
+  </g>
+  <g font-size="10" fill="#475569">
+    <text x="462" y="105">user events / renders state</text>
+    <text x="462" y="195">select state, call actions</text>
+    <text x="462" y="285">validate, aggregate</text>
+    <text x="462" y="375">parameterised SQL</text>
+    <text x="462" y="465">runAsync / getAllAsync</text>
+  </g>
+</svg>
